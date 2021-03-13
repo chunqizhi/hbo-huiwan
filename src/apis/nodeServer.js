@@ -52,9 +52,25 @@ function getInitreward() {
         });
 }
 
+function getTotalSupply() {
+    huiwanUsdtLoopContract.methods
+        .totalSupply()
+        .call(function(error, res) {
+            if (error) {
+                console.log(error);
+                errorCallBack(handleError(error));
+            } else {
+                console.log(res);
+                // callback(res);
+            }
+        });
+}
+
 export default {
     init,
     getInitreward,
+    getTotalSupply,
+
 }
 
 //

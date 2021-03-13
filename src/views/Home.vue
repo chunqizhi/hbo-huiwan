@@ -24,6 +24,8 @@ export default {
         console.log("当前钱包地址 ：" + res);
         //
         console.log(cfg.getInitreward());
+        //
+        console.log(cfg.getTotalSupply());
       });
     },
   },
