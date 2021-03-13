@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img @click="func" alt="Vue logo" src="../assets/logo.png">
+    <img alt="Vue logo" src="../assets/logo.png">
 
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
@@ -17,12 +17,18 @@ export default {
     HelloWorld
   },
   methods: {
-    func() {
-        cfg.getInitreward();
-    }
+    init() {
+      let that = this;
+      cfg.init(function(res) {
+        that.account = res;
+        console.log("当前钱包地址 ：" + res);
+        //
+        console.log(cfg.getInitreward());
+      });
+    },
   },
   created() {
-    this.func();
+    this.init();
   }
 }
 </script>
