@@ -163,6 +163,19 @@ function stakingToHuiwanUsdtLoopContract(amount, callback, errorCallBack) {
     sendTransfer(accountAddress, huiwanUsdtLoopAddr, data, callback, errorCallBack);
 }
 
+// 查询某个用户在 huiwanUsdtLoop 池子中的余额
+function getBalanceFromHuiwanUsdtLoopContract(account,callback, errorCallBack) {
+    huiwanUsdtLoopContract.methods
+        .balanceOf(account)
+        .call(function(error, res) {
+            if (error) {
+                errorCallBack(handleError(error));
+            } else {
+                callback(res);
+            }
+        });
+}
+
 export default {
     init,
     getInitreward,
@@ -173,6 +186,7 @@ export default {
     approveHuiwanUsdtLoopAddr,
     getBalanceFromhuiwanUsdtMdexContract,
     stakingToHuiwanUsdtLoopContract,
+    getBalanceFromHuiwanUsdtLoopContract,
 }
 
 //

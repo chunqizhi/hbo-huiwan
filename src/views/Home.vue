@@ -201,6 +201,10 @@ export default {
         //}, function(res){
         //    console.log("lalallalal failed: " + res);
         //});
+        // 查询某个用户在 huiwanUsdtLoop 池子中的余额
+        cfg.getBalanceFromHuiwanUsdtLoopContract(that.account, function(res) {
+            console.log("地址：" + that.account + " 在 huiwanUsdtLoop 池子中的余额 = " + res);
+        });
       });
     },
   },
