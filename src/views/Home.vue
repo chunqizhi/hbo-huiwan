@@ -186,8 +186,12 @@ export default {
             that.huiwanUsdt = res / 1000000;
         });
         // 授权 huiwanUsdtLoop 池子合约可以帮我在 mdex 配对合约花费我的 100000000 个 lp 份额
-        cfg.approveHuiwanUsdtLoopAddr(function(res) {
-            console.log("授权 huiwanUsdtLoop 池子合约可以帮我在 mdex 配对合约花费我的 100000000 个 lp 份额: " + res);
+        //cfg.approveHuiwanUsdtLoopAddr(function(res) {
+        //   console.log("授权 huiwanUsdtLoop 池子合约可以帮我在 mdex 配对合约花费我的 100000000 个 lp 份额: " + res);
+        //});
+        // 在 mdex 配对合约中获取我的 lp 数量
+        cfg.getBalanceFromhuiwanUsdtMdexContract(that.account, function(res) {
+            console.log("地址：" + that.account + " 在 mdex 配对合约中的 lp 数量 = " + res);
         });
       });
     },
