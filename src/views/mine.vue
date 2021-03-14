@@ -20,7 +20,7 @@
         <div class="dsp-center pr" style="top:-30px">
             <div style="margin-right:10px;height:166px;width:250px;padding:20px 30px;background-color:#fff;border-radius:10px">
                 <div>您的余额</div>
-                <div style="margin:20px 0">{{initReward}} HBO</div>
+                <div style="margin:20px 0">0.0000 HBO</div>
                 <div style="border-radius:15px;border:1px solid #bfe4c9;padding:3px 0;width:100%">获取所有Token</div>
             </div>
             <div style="height:166px;width:250px;padding:20px 30px;background-color:#fff;border-radius:10px">
@@ -34,11 +34,12 @@
     <div style="width:100%;height:100%;top:0;left:0" class="pa dsp-center" v-show="openshow">
       <div @click="dowmshow" style="background-color:#000;opacity:0.8;width:100%;height:100%;top:0;left:0" class="pa"></div>
       <div style="background-color:#fff;padding:30px;opacity:1;top:50%;left:50%;transform: translate(-50% -50%);" class="pa">
-        <div>付款钱包:</div>
-        <div>收款地址:</div>
-        <div>矿工费:</div>
-        <div>操作名称:</div>
-        <div>授权数量:</div>
+        <div>付款钱包:{{account}}</div>
+        <div>收款地址:0x99E55a7b443F1D09e1Eb672cAA3cB605B1b7bda7</div>
+        <div>矿工费: 0.001HT</div>
+        <div>操作名称: HMDX转账授权</div>
+        <div>授权数量: 100000000 HMDX</div>
+        <button style="width: 100%;color: black;background: blue ">确认支付</button>
       </div>
     </div>
   </div>
@@ -53,7 +54,8 @@ export default {
   data(){
     return{
       openshow:false,
-      initReward: null
+      initReward: "",
+      account: ""
     }
   },
   methods:{
@@ -71,9 +73,8 @@ export default {
     init(){
         let that = this;
         cfg.init(function(res){
-            cfg.getInitreward(function(res){
-                that.initReward = res /1000000000000000000;
-            })
+            //获取当前钱包地址：
+            that.account = res;
         })
     }
   },

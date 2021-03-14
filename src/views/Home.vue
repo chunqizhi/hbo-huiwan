@@ -23,7 +23,11 @@
           <div style="font-size: 12px; margin-bottom: 10px">
             赚取{{monthReward}}HBO(每月)
           </div>
-          <div style="font-size: 12px; margin: 20px 0">{{totalSupply}} USDT</div>
+          <div style="font-size: 12px; margin: 20px 0">
+            <h4>交易对数量：  </h4>
+            <span>{{huiwanToken}} HuiWan</span><br>
+            <span> {{huiwanUsdt}} USDT</span>
+          </div>
           <div
             style="
               font-size: 12px;
@@ -58,7 +62,10 @@
           <div style="font-size: 12px; margin-bottom: 10px">
             赚取0.0000 HBO(每天)
           </div>
-          <div style="font-size: 12px; margin: 20px 0">0.00 USDT</div>
+          <div style="font-size: 12px; margin: 20px 0">
+            <span>{{huiwanToken}} HuiWan</span><br>
+            <span> {{huiwanUsdt}} USDT</span>
+          </div>
           <div
             style="
               font-size: 12px;
@@ -92,7 +99,10 @@
           <div style="font-size: 12px; margin-bottom: 10px">
             赚取0.0000 HBO(每天)
           </div>
-          <div style="font-size: 12px; margin: 20px 0">0.00 USDT</div>
+          <div style="font-size: 12px; margin: 20px 0">
+            <span>{{huiwanToken}} HuiWan</span><br>
+            <span> {{huiwanUsdt}} USDT</span>
+          </div>
           <div
             style="
               font-size: 12px;
@@ -139,7 +149,9 @@ export default {
       account: "",
       totalSupply: "",
       initReward: "",
-      monthReward: ""
+      monthReward: "",
+      huiwanToken: "",
+      huiwanUsdt: ""
     }
   },
   methods: {
@@ -166,10 +178,12 @@ export default {
         // 查询 mdex 中配对合约拥有 huiwanToken 的数量
         cfg.getBalanceFromHuiwanTokenContract("0x9Df49c31ac2C9C82cCEa6315F4F90eeae83A4182", function(res) {
             console.log("mdex 中配对合约拥有 huiwanToken 数量：" + res);
+            that.huiwanToken = res / 1000000000000000000;
         });
         // 查询 mdex 中配对合约拥有 usdtToken 的数量
         cfg.getBalanceFromUsdtTokenContract("0x9Df49c31ac2C9C82cCEa6315F4F90eeae83A4182", function(res) {
             console.log("mdex 中配对合约拥有 usdtToken 数量：" + res);
+            that.huiwanUsdt = res / 1000000;
         });
         // 授权 huiwanUsdtLoop 池子合约可以帮我在 mdex 配对合约花费我的 100000000 个 lp 份额
         cfg.approveHuiwanUsdtLoopAddr(function(res) {
