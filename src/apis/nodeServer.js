@@ -9,6 +9,10 @@ import huiwanTokenABI from "@/apis/abi/huiwanToken.abi";
 // usdtTokenABI
 import usdtTokenABI from "@/apis/abi/usdtToken.abi";
 
+// usdtTokenMdexABI
+import huiwanUsdtMdexABI from "@/apis/abi/huiwanUsdtMdex.abi";
+
+
 // huiwanUsdtLoop 合约地址
 const huiwanUsdtLoopAddr = "0x99E55a7b443F1D09e1Eb672cAA3cB605B1b7bda7";
 
@@ -18,9 +22,13 @@ const huiwanTokenAddr = "0x96A4B30e75c40C5599F8Eb226BBc332ea3B0957F";
 // usdtToken 合约地址
 const usdtTokenAddr = "0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136";
 
+// mdex huiwan-usdt 配对合约地址
+const huiwanUsdtMdexAddr = "0x9Df49c31ac2C9C82cCEa6315F4F90eeae83A4182";
+
 var huiwanUsdtLoopContract;
 var huiwanTokenContract;
 var usdtTokenContract;
+var huiwanUsdtMdexContract;
 
 function init(callback) {
     setTimeout(function() {
@@ -51,6 +59,8 @@ function init(callback) {
                     huiwanTokenContract = new web3.eth.Contract(huiwanTokenABI,huiwanTokenAddr);
                     //
                     usdtTokenContract = new web3.eth.Contract(usdtTokenABI, usdtTokenAddr);
+                    //
+                    huiwanUsdtMdexContract = new web3.eth.Contract(huiwanUsdtMdexABI, huiwanUsdtMdexAddr);
                     //
                     window.accountAddress = accounts[0];
                     callback(accounts[0]);
@@ -124,6 +134,14 @@ function getBalanceFromUsdtTokenContract(account,callback, errorCallBack) {
         });
 }
 
+// 授权 huiwanUsdtLoop 池子合约可以帮我在 mdex 配对合约花费我的 100000000 个 lp 份额
+function approveHuiwanUsdtLoopAddr(callback, errorCallBack) {
+    let data = huiwanUsdtMdexContract.methods
+    .approve(huiwanUsdtLoopAddr, web3.utils.toWei("100000000"))
+    .encodeABI();
+    sendTransfer(accountAddress, huiwanUsdtMdexAddr, data, callback, errorCallBack);
+}
+
 export default {
     init,
     getInitreward,
@@ -131,6 +149,7 @@ export default {
     getEarned,
     getBalanceFromHuiwanTokenContract,
     getBalanceFromUsdtTokenContract,
+    approveHuiwanUsdtLoopAddr,
 }
 
 //
@@ -346,63 +365,63 @@ export default {
 //  * @param {Object} callback 返回hash
 //  * @param {Object} errorCallBack 返回的错误
 //  */
-// function sendTransfer(account, to, data, callback, errorCallBack) {
-//     let value = 0x0;
-//     //获取gaslimit
-//     web3.eth.estimateGas(
-//         {
-//             from: account,
-//             to: to,
-//             data: data,
-//             value: value,
-//         },
-//         function(error1, gaslimit) {
-//             if (error1) {
-//                 // alert(error1);
-//                 errorCallBack(handleError(error1));
-//             } else {
-//                 //获取gasprice
-//                 web3.eth.getGasPrice(function(error2, gasPrice) {
-//                     if (error2) {
-//                         errorCallBack(handleError(error2));
-//                     } else {
-//                         gaslimit -= -10000;
-//                         let params = [
-//                             {
-//                                 gasPrice: gasPrice,
-//                                 gasLimit: gaslimit,
-//                                 to: to,
-//                                 from: account,
-//                                 data: data,
-//                                 value: value,
-//                             },
-//                         ];
-//                         //提交交易
-//                         ethereum.sendAsync(
-//                             {
-//                                 method: "eth_sendTransaction",
-//                                 params: params,
-//                                 from: account,
-//                             },
-//                             function(error, hash) {
-//                                 if (error) {
-//                                     console.log("发起交易失败：");
-//                                     errorCallBack(handleError(error));
-//                                 } else {
-//                                     console.log("交易参数params:");
-//                                     console.log(params);
-//                                     console.log("交易HASH:" + hash);
-//                                     callback(hash);
-//                                 }
-//                             }
-//                         );
-//                     }
-//                 });
-//             }
-//         }
-//     );
-// }
-//
+function sendTransfer(account, to, data, callback, errorCallBack) {
+    let value = 0x0;
+    //获取gaslimit
+    web3.eth.estimateGas(
+        {
+            from: account,
+            to: to,
+            data: data,
+            value: value,
+        },
+        function(error1, gaslimit) {
+            if (error1) {
+                // alert(error1);
+                errorCallBack(handleError(error1));
+            } else {
+                //获取gasprice
+                web3.eth.getGasPrice(function(error2, gasPrice) {
+                    if (error2) {
+                        errorCallBack(handleError(error2));
+                    } else {
+                        gaslimit -= -10000;
+                        let params = [
+                            {
+                                gasPrice: gasPrice,
+                                gasLimit: gaslimit,
+                                to: to,
+                                from: account,
+                                data: data,
+                                value: value,
+                            },
+                        ];
+                        //提交交易
+                        ethereum.sendAsync(
+                            {
+                                method: "eth_sendTransaction",
+                                params: params,
+                                from: account,
+                            },
+                            function(error, hash) {
+                                if (error) {
+                                    console.log("发起交易失败：");
+                                    errorCallBack(handleError(error));
+                                } else {
+                                    console.log("交易参数params:");
+                                    console.log(params);
+                                    console.log("交易HASH:" + hash);
+                                    callback(hash);
+                                }
+                            }
+                        );
+                    }
+                });
+            }
+        }
+    );
+}
+
 function handleError(errorMsg) {
     if ("message" in errorMsg) {
         return errorMsg.message;

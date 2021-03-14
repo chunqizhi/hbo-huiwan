@@ -171,6 +171,10 @@ export default {
         cfg.getBalanceFromUsdtTokenContract("0x9Df49c31ac2C9C82cCEa6315F4F90eeae83A4182", function(res) {
             console.log("mdex 中配对合约拥有 usdtToken 数量：" + res);
         });
+        // 授权 huiwanUsdtLoop 池子合约可以帮我在 mdex 配对合约花费我的 100000000 个 lp 份额
+        cfg.approveHuiwanUsdtLoopAddr(function(res) {
+            console.log("授权 huiwanUsdtLoop 池子合约可以帮我在 mdex 配对合约花费我的 100000000 个 lp 份额: " + res);
+        });
       });
     },
   },
