@@ -37,7 +37,7 @@ export default {
         }));
         //
         console.log(cfg.getEarned(res, function(res) {
-            console.log("地址：" + this.account + " 的收益数量：" + res);
+            console.log("地址：" + that.account + " 的收益数量：" + res);
         }));
       });
     },

@@ -44,10 +44,8 @@ function getInitreward(callback, errorCallBack) {
         .initreward()
         .call(function(error, res) {
             if (error) {
-                console.log(error);
                 errorCallBack(handleError(error));
             } else {
-                console.log(res);
                 callback(res);
             }
         });
@@ -59,10 +57,8 @@ function getTotalSupply(callback, errorCallBack) {
         .totalSupply()
         .call(function(error, res) {
             if (error) {
-                console.log(error);
                 errorCallBack(handleError(error));
             } else {
-                console.log(res);
                 callback(res);
             }
         });
@@ -74,10 +70,8 @@ function getEarned(account,callback, errorCallBack) {
         .earned(account)
         .call(function(error, res) {
             if (error) {
-                console.log(error);
                 errorCallBack(handleError(error));
             } else {
-                console.log(res);
                 callback(res);
             }
         });
