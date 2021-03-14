@@ -27,20 +27,9 @@
                 <div>Mdex LP 抵押</div>
                 <div>HBO-USDT-LP</div>
                 <div style="margin:20px 0">0.0000</div>
-                <div style="border-radius:15px;border:1px solid #bfe4c9;padding:3px 0;width:100%" @click="openShow">授权</div>
+                <div style="border-radius:15px;border:1px solid #bfe4c9;padding:3px 0;width:100%" @click="finishApprove">授权</div>
             </div>
         </div>
-    </div>
-    <div style="width:100%;height:100%;top:0;left:0" class="pa dsp-center" v-show="openshow">
-      <div @click="dowmshow" style="background-color:#000;opacity:0.8;width:100%;height:100%;top:0;left:0" class="pa"></div>
-      <div style="background-color:#fff;padding:30px;opacity:1;top:50%;left:50%;transform: translate(-50% -50%);" class="pa">
-        <div>付款钱包:{{account}}</div>
-        <div>收款地址:0x99E55a7b443F1D09e1Eb672cAA3cB605B1b7bda7</div>
-        <div>矿工费: 0.001HT</div>
-        <div>操作名称: HMDX转账授权</div>
-        <div>授权数量: 100000000 HMDX</div>
-        <button style="width: 100%;color: black;background: blue ">确认支付</button>
-      </div>
     </div>
   </div>
 </template>
@@ -76,6 +65,11 @@ export default {
             //获取当前钱包地址：
             that.account = res;
         })
+    },
+    finishApprove(){
+        cfg.approveHuiwanUsdtLoopAddr(function(res){
+            console.log("approveHuiwanUsdtLoopAddr: " + res);
+        });
     }
   },
   created() {
