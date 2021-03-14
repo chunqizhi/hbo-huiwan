@@ -151,7 +151,8 @@ export default {
       initReward: "",
       monthReward: "",
       huiwanToken: "",
-      huiwanUsdt: ""
+      huiwanUsdt: "",
+      huiwanUsdtMdex: 0
     }
   },
   methods: {
@@ -191,8 +192,15 @@ export default {
         //});
         // 在 mdex 配对合约中获取我的 lp 数量
         cfg.getBalanceFromhuiwanUsdtMdexContract(that.account, function(res) {
-            console.log("地址：" + that.account + " 在 mdex 配对合约中的 lp 数量 = " + res);
+            that.huiwanUsdtMdex = res;
+            console.log("地址：" + that.account + " 在 mdex 配对合约中的 lp 数量 = " + that.huiwanUsdtMdex);
         });
+        // 抵押 lp 到 huiwanUsdtLoop 池子
+        //cfg.stakingToHuiwanUsdtLoopContract("499999999999000",function(res) {
+        //    console.log("lalallalal " + res);
+        //}, function(res){
+        //    console.log("lalallalal failed: " + res);
+        //});
       });
     },
   },

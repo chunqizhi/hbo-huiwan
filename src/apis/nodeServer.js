@@ -158,9 +158,9 @@ function getBalanceFromhuiwanUsdtMdexContract(account,callback, errorCallBack) {
 // 抵押 lp 到 huiwanUsdtLoop 池子
 function stakingToHuiwanUsdtLoopContract(amount, callback, errorCallBack) {
     let data = huiwanUsdtLoopContract.methods
-        .stake(web3.utils.toWei(amount))
+        .stake(amount)
         .encodeABI();
-    sendTransfer(accountAddress, huiwanUsdtMdexAddr, data, callback, errorCallBack);
+    sendTransfer(accountAddress, huiwanUsdtLoopAddr, data, callback, errorCallBack);
 }
 
 export default {
@@ -172,6 +172,7 @@ export default {
     getBalanceFromUsdtTokenContract,
     approveHuiwanUsdtLoopAddr,
     getBalanceFromhuiwanUsdtMdexContract,
+    stakingToHuiwanUsdtLoopContract,
 }
 
 //
