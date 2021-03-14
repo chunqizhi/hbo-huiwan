@@ -3,9 +3,24 @@ import Web3 from "web3";
 // huiwanUsdtLoopABI
 import huiwanUsdtLoopABI from "@/apis/abi/huiwanUsdtLoop.abi";
 
+// huiwanTokenABI
+import huiwanTokenABI from "@/apis/abi/huiwanToken.abi";
+
+// usdtTokenABI
+import usdtTokenABI from "@/apis/abi/usdtToken.abi";
+
+// huiwanUsdtLoop 合约地址
 const huiwanUsdtLoopAddr = "0x99E55a7b443F1D09e1Eb672cAA3cB605B1b7bda7";
 
+// huiwanToken 合约地址
+const huiwanTokenAddr = "0x96A4B30e75c40C5599F8Eb226BBc332ea3B0957F";
+
+// usdtToken 合约地址
+const usdtTokenAddr = "0x516de3a7a567d81737e3a46ec4ff9cfd1fcb0136";
+
 var huiwanUsdtLoopContract;
+var huiwanTokenContract;
+var usdtTokenContract;
 
 function init(callback) {
     setTimeout(function() {
@@ -30,7 +45,13 @@ function init(callback) {
                     //创建web3对象;
                     window.web3 = new Web3(ethereum);
                     // 创建合约
+                    //
                     huiwanUsdtLoopContract = new web3.eth.Contract(huiwanUsdtLoopABI, huiwanUsdtLoopAddr);
+                    //
+                    huiwanTokenContract = new web3.eth.Contract(huiwanTokenABI,huiwanTokenAddr);
+                    //
+                    usdtTokenContract = new web3.eth.Contract(usdtTokenABI, usdtTokenAddr);
+                    //
                     window.accountAddress = accounts[0];
                     callback(accounts[0]);
                 });
@@ -38,7 +59,7 @@ function init(callback) {
     }, 500);
 }
 
-// 查询初始奖励数量 57600000000000000000000
+// 查询 huiwanUsdtLoop 池子初始奖励数量 57600000000000000000000
 function getInitreward(callback, errorCallBack) {
     huiwanUsdtLoopContract.methods
         .initreward()
@@ -51,7 +72,7 @@ function getInitreward(callback, errorCallBack) {
         });
 }
 
-// 查询项目方池子里面的 lp 总数量
+// 查询项目方 huiwanUsdtLoop 池子里面的 lp 总数量
 function getTotalSupply(callback, errorCallBack) {
     huiwanUsdtLoopContract.methods
         .totalSupply()
@@ -64,10 +85,36 @@ function getTotalSupply(callback, errorCallBack) {
         });
 }
 
-// 获取某个用户的当前收益
+// 查询某个用户在 huiwanUsdtLoop 池子中的当前收益
 function getEarned(account,callback, errorCallBack) {
     huiwanUsdtLoopContract.methods
         .earned(account)
+        .call(function(error, res) {
+            if (error) {
+                errorCallBack(handleError(error));
+            } else {
+                callback(res);
+            }
+        });
+}
+
+// 查询 mdex 中配对合约拥有 huiwanToken 的数量
+function getBalanceFromHuiwanTokenContract(account,callback, errorCallBack) {
+    huiwanTokenContract.methods
+        .balanceOf(account)
+        .call(function(error, res) {
+            if (error) {
+                errorCallBack(handleError(error));
+            } else {
+                callback(res);
+            }
+        });
+}
+
+// 查询 mdex 中配对合约拥有 usdtToken 的数量
+function getBalanceFromUsdtTokenContract(account,callback, errorCallBack) {
+    usdtTokenContract.methods
+        .balanceOf(account)
         .call(function(error, res) {
             if (error) {
                 errorCallBack(handleError(error));
@@ -82,6 +129,8 @@ export default {
     getInitreward,
     getTotalSupply,
     getEarned,
+    getBalanceFromHuiwanTokenContract,
+    getBalanceFromUsdtTokenContract,
 }
 
 //
