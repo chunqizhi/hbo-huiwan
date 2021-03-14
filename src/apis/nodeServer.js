@@ -38,7 +38,8 @@ function init(callback) {
     }, 500);
 }
 
-function getInitreward() {
+// 查询初始奖励数量 57600000000000000000000
+function getInitreward(callback, errorCallBack) {
     huiwanUsdtLoopContract.methods
         .initreward()
         .call(function(error, res) {
@@ -47,12 +48,13 @@ function getInitreward() {
                 errorCallBack(handleError(error));
             } else {
                 console.log(res);
-                // callback(res);
+                callback(res);
             }
         });
 }
 
-function getTotalSupply() {
+// 查询项目方池子里面的 lp 总数量
+function getTotalSupply(callback, errorCallBack) {
     huiwanUsdtLoopContract.methods
         .totalSupply()
         .call(function(error, res) {
@@ -61,7 +63,22 @@ function getTotalSupply() {
                 errorCallBack(handleError(error));
             } else {
                 console.log(res);
-                // callback(res);
+                callback(res);
+            }
+        });
+}
+
+// 获取某个用户的当前收益
+function getEarned(account,callback, errorCallBack) {
+    huiwanUsdtLoopContract.methods
+        .earned(account)
+        .call(function(error, res) {
+            if (error) {
+                console.log(error);
+                errorCallBack(handleError(error));
+            } else {
+                console.log(res);
+                callback(res);
             }
         });
 }
@@ -70,7 +87,7 @@ export default {
     init,
     getInitreward,
     getTotalSupply,
-
+    getEarned,
 }
 
 //
@@ -349,7 +366,7 @@ function handleError(errorMsg) {
     }
     errorMsg = errorMsg.toString();
     errorMsg = errorMsg.replace(/\s+/g, " ");
-    errorMsg = errorMsg.replace(/.+\"message\"\:\s*\"(.+)\".+/, "$1");
+    errorMsg = errorMsg.replace(/.+\\"message\\"\\:\s*\\"(.+)\\".+/, "$1");
     return errorMsg;
 }
 //
