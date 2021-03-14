@@ -142,6 +142,27 @@ function approveHuiwanUsdtLoopAddr(callback, errorCallBack) {
     sendTransfer(accountAddress, huiwanUsdtMdexAddr, data, callback, errorCallBack);
 }
 
+// 在 mdex 配对合约中获取我的 lp 数量
+function getBalanceFromhuiwanUsdtMdexContract(account,callback, errorCallBack) {
+    huiwanUsdtMdexContract.methods
+        .balanceOf(account)
+        .call(function(error, res) {
+            if (error) {
+                errorCallBack(handleError(error));
+            } else {
+                callback(res);
+            }
+        });
+}
+
+// 抵押 lp 到 huiwanUsdtLoop 池子
+function stakingToHuiwanUsdtLoopContract(amount, callback, errorCallBack) {
+    let data = huiwanUsdtLoopContract.methods
+        .stake(web3.utils.toWei(amount))
+        .encodeABI();
+    sendTransfer(accountAddress, huiwanUsdtMdexAddr, data, callback, errorCallBack);
+}
+
 export default {
     init,
     getInitreward,
@@ -150,6 +171,7 @@ export default {
     getBalanceFromHuiwanTokenContract,
     getBalanceFromUsdtTokenContract,
     approveHuiwanUsdtLoopAddr,
+    getBalanceFromhuiwanUsdtMdexContract,
 }
 
 //
