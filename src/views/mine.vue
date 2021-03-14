@@ -27,7 +27,19 @@
                 <div>Mdex LP 抵押</div>
                 <div>HBO-USDT-LP</div>
                 <div style="margin:20px 0">0.0000</div>
-                <div style="border-radius:15px;border:1px solid #bfe4c9;padding:3px 0;width:100%" @click="finishApprove">授权</div>
+                <div style="border-radius:15px;border:1px solid #bfe4c9;padding:3px 0;width:100%" @click="finishApprove" v-if="approveHuiwanUsdtLoopAddrShow">授权</div>
+                <div v-if="!approveHuiwanUsdtLoopAddrShow">
+                    <input type="text" disabled value="解押">
+                    <button style="background : blue ; color: black; width: 10%" @click="openShow">+</button>
+                </div>
+                <div v-if="open" @click="dowmshow" style="background-color:#000;opacity:0.8;width:100%;height:100%;top:0;left:0" class="pa">
+                    <div style="background-color:#fff;padding:30px;opacity:1;top:50%;left:50%;transform: translate(-50% -50%);" class="pa">
+                        <div>最大LP值:123</div>
+                        <input type="text"><button>最大值</button><br>
+                        <button>取消</button>
+                        <button>提交</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -44,7 +56,9 @@ export default {
     return{
       openshow:false,
       initReward: "",
-      account: ""
+      account: "",
+      approveHuiwanUsdtLoopAddrShow: true,
+      open: false
     }
   },
   methods:{
@@ -53,9 +67,12 @@ export default {
       this.getauthorization()
     },
     getauthorization(){
-      console.log('获取授权')
+      console.log('获取当前账号LP');
+      this.open = !this.open;
+
       
     },
+    
     dowmshow(){
       this.openshow = false;
     },
@@ -67,8 +84,10 @@ export default {
         })
     },
     finishApprove(){
+        let that = this;
         cfg.approveHuiwanUsdtLoopAddr(function(res){
             console.log("approveHuiwanUsdtLoopAddr: " + res);
+            that.approveHuiwanUsdtLoopAddrShow = !that.approveHuiwanUsdtLoopAddrShow;
         });
     }
   },
